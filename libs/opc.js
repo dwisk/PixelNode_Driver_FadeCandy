@@ -28,13 +28,13 @@ OPC.prototype._reconnect = function()
     this.connected = false;
 
     this.socket.onclose = function() {
-        console.log("Connection closed");
+        console.log("FadeCandy connection closed".red);
         _this.socket = null;
         _this.connected = false;
     }
 
     this.socket.connect(this.port, this.host, function() {
-        console.log("Connected to " + _this.socket.remoteAddress);
+        console.log(("FadeCandy connected to " + _this.socket.remoteAddress).green);
         _this.connected = true;
         _this.socket.setNoDelay();
     });
