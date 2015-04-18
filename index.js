@@ -15,6 +15,7 @@
 
 var OPC = new require('./libs/opc');
 var util = require("util");
+var colors = require('colors');
 
 
 /* Class Constructor
@@ -52,7 +53,7 @@ PixelNode_Driver_FadeCandy.prototype.client = {};
 
  // init driver
 PixelNode_Driver_FadeCandy.prototype.init = function() {
-	console.log("Init PixelDriver FadeCandy:", this.options);
+	console.log("Init PixelDriver FadeCandy".grey);
 
 	// get new OPC / fadecandy client
 	this.client = new OPC(this.options.address, this.options.port);
