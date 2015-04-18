@@ -1,6 +1,6 @@
 {
   "name": "pixelnode-driver-fadecandy",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Pixel Driver for FadeCandy",
   "main": "index.js",
   "scripts": {
