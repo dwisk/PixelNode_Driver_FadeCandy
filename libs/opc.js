@@ -18,6 +18,7 @@ var OPC = function(host, port)
     this.host = host;
     this.port = port;
     this.pixelBuffer = null;
+    this._reconnect();
 };
 
 OPC.prototype._reconnect = function()
@@ -27,16 +28,20 @@ OPC.prototype._reconnect = function()
     this.socket = new net.Socket()
     this.connected = false;
 
+    this.socket.on('error', function(ex) {
+        if (_this.onError) _this.onError(ex);
+    });
+
     this.socket.onclose = function() {
-        console.log("FadeCandy connection closed".red);
         _this.socket = null;
         _this.connected = false;
+        if (_this.onDisconnect) _this.onDisconnect();
     }
 
     this.socket.connect(this.port, this.host, function() {
-        console.log(("FadeCandy connected to " + _this.socket.remoteAddress).green);
         _this.connected = true;
         _this.socket.setNoDelay();
+       if (_this.onConnect)  _this.onConnect();
     });
 }
 
