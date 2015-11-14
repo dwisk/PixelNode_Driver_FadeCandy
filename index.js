@@ -43,7 +43,8 @@ module.exports = PixelNode_Driver_FadeCandy;
 
 PixelNode_Driver_FadeCandy.prototype.default_options = {
 	pixelColorCorrection: true,
-	offset: true
+	offset: true,
+	dimmer: 1
 };
 PixelNode_Driver_FadeCandy.prototype.client = {};
 
@@ -82,9 +83,10 @@ PixelNode_Driver_FadeCandy.prototype.init = function() {
 };
 
 // set's a pixel via fadecandy client
-PixelNode_Driver_FadeCandy.prototype.setPixel = function(id, r,g,b) {
+PixelNode_Driver_FadeCandy.prototype.setPixel = function(strip, id, r,g,b) {
 	if (this.client.connected)
-		this.client.setPixel(id, r, g, b);
+		this.client.setPixel(id, r * this.options.dimmer, g * this.options.dimmer, b * this.options.dimmer);
+
 }
 
 // tells fadecandy client to write pixels
