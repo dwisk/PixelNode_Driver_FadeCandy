@@ -43,7 +43,8 @@ module.exports = PixelNode_Driver_FadeCandy;
 
 PixelNode_Driver_FadeCandy.prototype.default_options = {
 	pixelColorCorrection: true,
-	offset: true
+	offset: true,
+	dimmer: 1
 };
 PixelNode_Driver_FadeCandy.prototype.client = {};
 
@@ -53,22 +54,44 @@ PixelNode_Driver_FadeCandy.prototype.client = {};
 
  // init driver
 PixelNode_Driver_FadeCandy.prototype.init = function() {
+	var self = this;
 	console.log("Init PixelDriver FadeCandy".grey);
 
 	// get new OPC / fadecandy client
 	this.client = new OPC(this.options.address, this.options.port);
 
-	// start painter
-	this.startPainter.call(this);
+	// start painter on connect
+	this.client.onConnect = function() {
+		console.log(("FadeCandy connected to " + this.socket.remoteAddress).green);
+		self.startPainter.call(self);
+	}
+
+	// log message on disconnect
+	this.client.onDisconnect = function() {
+		console.log("FadeCandy connection closed".red);
+	}
+
+	// exit on error
+	this.client.onError = function(error) {
+		// tell what is wrong
+		console.log(("No FadeCandy Server found at "+self.options.address+":"+self.options.port+"!").red);
+		// tell what to do
+		console.log("Start FadeCandy Server (fc-server-???) or disable FadeCandy Driver in pixelnode config.".grey);
+		// exit process
+		process.exit(1);
+	}
 };
 
 // set's a pixel via fadecandy client
-PixelNode_Driver_FadeCandy.prototype.setPixel = function(id, r,g,b) {
-	this.client.setPixel(id, r, g, b);
+PixelNode_Driver_FadeCandy.prototype.setPixel = function(strip, id, r,g,b) {
+	if (this.client.connected)
+		this.client.setPixel(id, r * this.options.dimmer, g * this.options.dimmer, b * this.options.dimmer);
+
 }
 
 // tells fadecandy client to write pixels
 PixelNode_Driver_FadeCandy.prototype.sendPixels = function() {
-	this.client.writePixels();
+	if (this.client.connected)
+		this.client.writePixels();
 }
 
