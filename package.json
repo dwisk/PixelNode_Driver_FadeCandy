@@ -22,7 +22,7 @@
   "homepage": "https://github.com/dwisk/PixelNode_Driver_FadeCandy#readme",
   "dependencies": {
     "colors": "^1.0.3",
-    "pixelnode-driver": "0.0.x"
+    "pixelnode-driver": "0.1.x"
   },
   "readme": "# PixelNode_Driver_FadeCandy\nPixel Driver for FadeCandy\n",
   "readmeFilename": "README.md",
